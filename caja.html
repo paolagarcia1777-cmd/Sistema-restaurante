@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caja · Fogón Criollo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <strong class="brand">Fogón Criollo</strong>
+  <nav id="tabs"></nav>
+  <span id="quien" class="quien"></span>
+  <button id="btnSalir" class="btn ghost">Salir</button>
+</header>
+<main id="vista"></main>
+
+<div class="ov" id="pOv" hidden><div class="mo" role="dialog" aria-modal="true" aria-labelledby="pMesa">
+  <h3 id="pMesa"></h3><div style="font-size:24px;font-weight:800" id="pTot"></div>
+  <div class="med" id="med"><button class="btn" data-m="Efectivo">Efectivo</button><button class="btn" data-m="Tarjeta">Tarjeta</button><button class="btn" data-m="Transferencia">Transf.</button></div>
+  <div class="fo"><button class="btn" id="pNo">Cancelar</button><button class="btn pri" id="pOk" disabled>Confirmar pago</button></div>
+</div></div>
+<div class="ov" id="fOv" hidden><div class="mo fa" id="fBox"></div></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="js/config.js?v=3"></script>
+<script type="module" src="js/caja.js"></script>
+</body>
+</html>

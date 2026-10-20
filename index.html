@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fogón Criollo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+<section id="login" class="login">
+  <div class="login-card">
+    <h1>Fogón Criollo</h1>
+    <p class="sub">Ingresa con tu usuario del restaurante</p>
+    <input id="email" type="email" placeholder="Correo" autocomplete="username">
+    <input id="pass" type="password" placeholder="Contraseña" autocomplete="current-password">
+    <label class="ver"><input type="checkbox" id="verPass"> Mostrar contraseña</label>
+    <button id="btnLogin" class="btn pri">Entrar</button>
+    <p id="loginMsg" class="msg"></p>
+  </div>
+</section>
+
+<div id="toast" class="toast" role="status"></div>
+<script src="js/config.js?v=3"></script>
+<script type="module" src="js/login.js?v=3"></script>
+</body>
+</html>

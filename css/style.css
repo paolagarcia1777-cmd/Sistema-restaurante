@@ -1,0 +1,234 @@
+/* ============================================================
+   FOGÓN CRIOLLO · style.css
+   Orden: variables · base · botones · barra superior · layouts ·
+   mesero · cocina · caja · login · admin · modales · responsive
+   ============================================================ */
+
+/* ---------- Variables ---------- */
+:root {
+  --ink: #1c2b24;
+  --bg: #eceee9;
+  --card: #fff;
+  --line: #d5dad2;
+  --leaf: #2f6b4f;
+  --maize: #e3a72f;
+  --ember: #b8431f;
+  --muted: #6b766f;
+  --r: 12px;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box }
+body { margin: 0; font: 16px/1.45 "Public Sans", system-ui, sans-serif; background: var(--bg); color: var(--ink) }
+h1, h2, h3, .brand { font-family: Fraunces, Georgia, serif }
+[hidden] { display: none !important }
+button, input, select, textarea { font: inherit; color: inherit }
+button { cursor: pointer }
+input, select, textarea { width: 100%; padding: .65rem .75rem; border: 1px solid var(--line); border-radius: 8px; background: #fff }
+:focus-visible { outline: 3px solid var(--maize); outline-offset: 2px }
+small { display: block; color: var(--muted) }
+.vacio { color: var(--muted); padding: 1rem 0; text-align: center }
+.msg { color: var(--ember); min-height: 1.2em; margin: 0; font-size: 14px }
+main { padding: 24px; max-width: 1360px; margin: auto }
+
+/* ---------- Botones ---------- */
+.btn {
+  min-height: 44px;
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--ink);
+  background: #fff;
+  font-weight: 700;
+}
+.btn.pri { background: var(--leaf); border-color: var(--leaf); color: #fff }
+.btn.no { border-color: var(--ember); color: var(--ember) }
+.btn.sm { min-height: 36px; padding: .2rem .7rem; font-size: 14px }
+.btn.w { width: 100% }
+.btn:disabled { opacity: .4; cursor: not-allowed }
+.btn.ghost { border-color: transparent; background: transparent; color: #fff }
+
+/* ---------- Barra superior ---------- */
+.top {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  background: var(--ink); color: #fff; padding: 0 24px; min-height: 64px;
+  position: sticky; top: 0; z-index: 5
+}
+.brand { font-size: 24px; font-weight: 800; color: var(--maize) }
+.top nav { display: flex; gap: 6px; flex: 1; overflow-x: auto }
+.top nav button, .top nav a {
+  text-decoration: none; text-transform: capitalize; font-size: 1rem;
+  background: none; border: 0; color: #cfd8d2; padding: 10px 16px;
+  border-radius: 8px; cursor: pointer; font-weight: 700; white-space: nowrap
+}
+.top nav button.on, .top nav a.on { background: var(--leaf); color: #fff }
+.quien { color: #cfd8d2; font-size: 14px }
+
+/* Campana de pedidos listos */
+.bell { position: relative }
+.bell > button {
+  background: none; border: 1px solid #d5dad2; color: #fff;
+  border-radius: 8px; padding: 8px 14px; font-weight: 700
+}
+.bell b { background: var(--maize); color: var(--ink); border-radius: 9px; padding: 0 7px; margin-left: 6px }
+.av {
+  position: absolute; right: 0; top: 50px; width: 290px;
+  background: #fff; border-radius: var(--r); padding: 14px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.28); z-index: 30
+}
+.av button {
+  display: flex; justify-content: space-between; width: 100%;
+  padding: 10px 12px; margin-bottom: 8px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px
+}
+.av button:hover { background: var(--line) }
+
+/* ---------- Layouts ---------- */
+.split { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start }
+.card { background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 20px }
+.adm { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start }
+.f { display: grid; gap: 10px; margin-bottom: 16px }
+
+/* ---------- Mesero: mesas ---------- */
+.mesas { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 28px }
+.m {
+  position: relative; background: #fff; border: 2px solid var(--leaf);
+  border-radius: var(--r); padding: 14px; text-align: left; display: grid; gap: 2px
+}
+.m b { font: 800 30px Fraunces, serif }
+.m small { color: var(--muted) }
+.m em { font-style: normal; font-weight: 700; font-size: 14px }
+.m.nuevo { background: #e0e3de; border-color: var(--ink) }
+.m.prep { background: #f6e4c4; border-color: var(--maize) }
+.m.listo { background: var(--maize); border-color: var(--ember) }
+.m.listo small { color: var(--ink) }
+.m.entregado { background: #dfeae3; border-color: var(--leaf) }
+.m.cuenta { background: #f2d3c6; border-color: var(--ember) }
+.m.sel { outline: 4px solid var(--ink); outline-offset: 2px }
+.m.listo::after {
+  content: ""; position: absolute; top: 10px; right: 10px;
+  width: 14px; height: 14px; border-radius: 50%; background: var(--ember);
+  animation: pu 1s infinite
+}
+@keyframes pu { 50% { opacity: .25 } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important } }
+
+/* Mesero: carta */
+.chips { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px }
+.chip {
+  min-height: 44px; padding: .4rem 1rem; border: 1px solid var(--ink);
+  background: #fff; border-radius: 99px; white-space: nowrap
+}
+.chip.on { background: var(--ink); color: #fff }
+.prods { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px }
+.prod {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--r);
+  padding: 14px; text-align: left; display: grid; gap: 4px; min-height: 96px
+}
+.prod:hover { border-color: var(--leaf) }
+.prod span { color: var(--leaf); font-weight: 700 }
+
+/* Mesero: ticket y pedidos de la mesa */
+.ln { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line) }
+.st { grid-column: 1 / -1; display: flex; gap: 8px }
+.st button { width: 44px; height: 44px; border-radius: 8px; border: 1px solid var(--ink); background: #fff; font-size: 20px }
+.tot { display: flex; justify-content: space-between; font-size: 22px; font-weight: 800; padding: 14px 0; border-top: 2px solid var(--ink) }
+.cr { padding: 10px 0; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.cr details { flex-basis: 100%; font-size: 14px }
+.dl { display: flex; justify-content: space-between; padding: 3px 0 }
+
+/* Etiquetas de estado del pedido (nombres reales de la base de datos) */
+.est { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: var(--line) }
+.est.enviado { background: var(--line) }
+.est.preparando { background: #f6e4c4 }
+.est.listo { background: #cfe3d6; color: #1f4a35 }
+.est.entregado { background: #dfeae3 }
+
+/* ---------- Cocina ---------- */
+.kds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start }
+.kds > div { background: #dfe3dc; border-radius: var(--r); padding: 14px; display: grid; gap: 12px }
+.kt { background: #fff; border-left: 8px solid var(--maize); border-radius: var(--r); padding: 14px }
+.kt.urg { border-color: var(--ember) }
+.kt ul { padding-left: 18px; margin: 8px 0 12px }
+.kh { display: flex; justify-content: space-between }
+.tm { font-variant-numeric: tabular-nums; color: var(--ember); font-weight: 700 }
+
+/* ---------- Caja ---------- */
+.cajal { display: grid; gap: 12px; max-width: 640px }
+.cj { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 14px 18px }
+.cj > i { font: 800 22px Fraunces, serif; font-style: normal; background: var(--ember); color: #fff; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center }
+.cj > div { flex: 1 }
+
+/* ---------- Login (index.html) ---------- */
+/* Foto de fondo con velo oscuro para que el formulario se lea bien */
+body.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background:
+    linear-gradient(rgba(28, 43, 36, .5), rgba(28, 43, 36, .5)),
+    url("../imagenes/fondo.jpeg") center / cover no-repeat fixed;
+}
+.login { width: 100%; max-width: 400px; margin: 0 auto; display: grid; gap: 12px }
+.login-card {
+  background: rgba(255, 255, 255, .94);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, .6);
+  border-radius: var(--r);
+  padding: 28px;
+  display: grid;
+  gap: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+}
+.login-card h1 { margin: 0; font-size: 28px }
+.sub { color: var(--muted); margin: 0 }
+.ver { display: flex; gap: 8px; align-items: center; font-size: 14px }
+.ver input { width: auto }
+
+/* ---------- Administración ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 14px }
+th { text-align: left; color: var(--muted); padding: 8px; border-bottom: 2px solid var(--line) }
+td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top }
+.lk { background: none; border: 0; font-weight: 700; padding: 4px 6px; text-decoration: underline; cursor: pointer; color: var(--ink) }
+.lk:hover { color: var(--leaf) }
+.lk.sin { color: var(--ember) }
+
+.al { background: #fff3d6; border: 1px solid #d8a13b; color: #6b4710; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; font-size: 14px }
+.al.ag { background: #f8dedb; border-color: #c96a58; color: #7a2a15 }
+
+/* Formularios y lista de usuarios */
+.form { display: grid; gap: .6rem }
+.row { display: flex; gap: .5rem; margin-bottom: .8rem; flex-wrap: wrap }
+.row input, .row select { flex: 1; min-width: 120px }
+.fila { display: flex; gap: .5rem; align-items: center; padding: .5rem 0; border-bottom: 1px solid var(--line); flex-wrap: wrap }
+.fila > span { flex: 1; min-width: 120px }
+.fila input { width: 110px }
+.fila select { width: auto }
+.fila small { display: block; color: var(--muted) }
+.acc { display: flex; gap: .4rem; align-items: center }
+
+/* ---------- Modales y aviso ---------- */
+.ov { position: fixed; inset: 0; background: rgba(28,43,36,.55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50 }
+.mo { background: #fff; border-radius: var(--r); padding: 24px; width: 100%; max-width: 380px }
+.mo.fa { max-width: 720px; max-height: 90vh; overflow: auto }
+.med { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 }
+.med .on { background: var(--ink); color: #fff }
+.fo { display: flex; gap: 10px; margin-top: 14px }
+.fo > * { flex: 1 }
+
+.toast { position: fixed; bottom: 16px; left: 50%; transform: translate(-50%, 150%); background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 8px; transition: transform .25s; z-index: 60 }
+.toast.on { transform: translate(-50%, 0) }
+
+/* ---------- Responsive e impresión ---------- */
+@media (max-width: 900px) { .split, .adm, .kds { grid-template-columns: 1fr } }
+@media print {
+  body > * { display: none !important }
+  #fOv { display: flex !important; position: static; background: none; padding: 0 }
+  #fOv .fo { display: none }
+}
+
+/* ---------- Alias usados por las vistas de administración ---------- */
+.panel { background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 20px }
+.btn.danger { border-color: var(--ember); color: var(--ember) }
+.quien { font-size: .85rem; color: #cfd8d2 }
+@media (max-width: 820px) { .quien { display: none } }

@@ -1,0 +1,10 @@
+{
+  "name": "fogon-criollo",
+  "version": "1.0.0",
+  "description": "Sistema de gestión de restaurante Fogón Criollo",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "echo 'Usa Live Server (VS Code) para desarrollo local'"
+  },
+  "private": true
+}

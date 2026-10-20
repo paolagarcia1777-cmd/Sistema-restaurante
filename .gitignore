@@ -1,0 +1,19 @@
+# Config generada en build (Cloudflare Pages)
+js/config.js
+
+# Config local de desarrollo
+js/config.local.js
+esquema.sql
+
+# Dependencias
+node_modules/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
