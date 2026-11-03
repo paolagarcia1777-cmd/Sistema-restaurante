@@ -7,9 +7,14 @@ async function vUsuarios() {
   const { data } = await db.from("perfil").select("*").order("nombre");
   const roles = ["admin", "mesero", "cocina", "caja", "pendiente"];
   $("#vista").innerHTML = `<div class="split"><div class="panel"><h2>Usuarios</h2>
-    ${(data ?? []).map(u => `<div class="fila" data-u="${u.id}"><span><b>${esc(u.nombre)}</b><br><small>${esc(u.email)}</small></span>
-      <select>${roles.map(r => `<option ${r === u.rol ? "selected" : ""}>${r}</option>`).join("")}</select>
-      <button class="btn sm danger" data-a="delU" ${u.id === S.user.id ? "disabled" : ""}>Eliminar</button></div>`).join("")}
+   ${(data ?? []).map(u => {
+  const esPrincipal = u.email === "admin@fogoncriollo.com";
+  const protegido = esPrincipal || u.id === S.user.id;
+  const opciones = esPrincipal ? ["admin"] : roles;
+  return `<div class="fila" data-u="${u.id}"><span><b>${esc(u.nombre)}</b><br><small>${esc(u.email)}</small></span>
+    <select ${protegido ? "disabled" : ""}>${opciones.map(r => `<option ${r === u.rol || esPrincipal ? "selected" : ""}>${r}</option>`).join("")}</select>
+    <button class="btn sm danger" data-a="delU" ${protegido ? "disabled" : ""}>Eliminar</button></div>`;
+}).join("")}
     </div><aside class="panel"><h2>Nuevo usuario</h2><div class="form">
       <input id="uNombre" placeholder="Nombre"><input id="uEmail" type="email" placeholder="Correo"><input id="uPass" type="password" placeholder="Contraseña (mín. 6)">
       <select id="uRol"><option>mesero</option><option>cocina</option><option>caja</option><option>admin</option></select>
