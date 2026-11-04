@@ -1,4 +1,4 @@
-import { db, $, $$, money, esc, toast, S, iniciarPagina, cargarCatalogo } from "./core.js";
+import { db, $, $$, money, esc, toast, S, iniciarPagina, cargarCatalogo, cerrarSesion } from "./core.js";
 
 let editando = null;
 let editandoU = null;
@@ -136,7 +136,7 @@ async function vMenu() {
     </div>`;
 
   $("#who").textContent = S.perfil?.nombre ?? "—";
-  $("#logout").onclick = async () => { await db.auth.signOut(); location.replace("index.html"); };
+  $("#logout").onclick = cerrarSesion;
 
   $("#cGuard").onclick = async () => {
     const nombre = $("#cNom").value.trim(), orden = parseInt($("#cOrd").value, 10) || 1;

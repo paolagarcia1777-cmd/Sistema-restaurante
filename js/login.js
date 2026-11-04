@@ -1,4 +1,4 @@
-import { db, $, RUTAS } from "./core.js";
+import { db, $, RUTAS, borrarSesionLocal } from "./core.js";
 
 async function redirigir() {
   const { data: { session } } = await db.auth.getSession();
@@ -6,7 +6,8 @@ async function redirigir() {
   const { data } = await db.from("perfil").select("rol").eq("id", session.user.id).single();
   if (data && RUTAS[data.rol]) return location.replace(RUTAS[data.rol]);
   $("#loginMsg").textContent = "Tu usuario aún no tiene rol asignado. Habla con el administrador.";
-  await db.auth.signOut();
+  try { await db.auth.signOut(); } catch (e) { console.warn("signOut:", e); }
+  borrarSesionLocal();   // aunque falle la llamada, no queda con sesión sin rol
 }
 
 $("#btnLogin").onclick = async () => {

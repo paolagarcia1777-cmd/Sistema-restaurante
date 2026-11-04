@@ -24,6 +24,26 @@ export const RUTAS = { admin: "admin.html", mesero: "mesero.html", cocina: "coci
 
 export const S = { user: null, perfil: null, cats: [], prods: [], mesas: [], pedidos: [], mesa: null, pedido: null, detalles: [], cat: null };
 
+// Borra la sesión guardada en el navegador (respaldo si signOut no pudo hacerlo)
+export function borrarSesionLocal() {
+  try {
+    Object.keys(localStorage).filter((k) => k.startsWith("sb-")).forEach((k) => localStorage.removeItem(k));
+  } catch (e) { console.warn("No se pudo limpiar la sesión local:", e); }
+}
+
+// Cierra sesión sin fallar nunca: aunque Supabase no responda, sale igual
+export async function cerrarSesion() {
+  try {
+    const { error } = await db.auth.signOut();
+    if (error) console.warn("signOut respondió con error:", error.message);
+  } catch (e) {
+    console.warn("signOut falló (se cierra igual):", e);
+  } finally {
+    borrarSesionLocal();
+    location.replace("index.html");
+  }
+}
+
 export async function iniciarPagina(rolesPermitidos, alListo) {
   const { data: { session } } = await db.auth.getSession();
   if (!session) return location.replace("index.html");
@@ -32,7 +52,7 @@ export async function iniciarPagina(rolesPermitidos, alListo) {
   if (!data || !rolesPermitidos.includes(data.rol)) return location.replace("index.html");
   S.perfil = data;
   $("#quien").textContent = `${data.nombre} · ${data.rol}`;
-  $("#btnSalir").onclick = async () => { await db.auth.signOut(); location.replace("index.html"); };
+  $("#btnSalir").onclick = cerrarSesion;
   if (data.rol === "admin") {
     const aqui = (r) => location.pathname.endsWith(RUTAS[r]);
     $("#tabs").insertAdjacentHTML("beforeend", ["admin", "mesero", "cocina", "caja"]
