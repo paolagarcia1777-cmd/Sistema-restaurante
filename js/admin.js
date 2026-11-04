@@ -1,9 +1,11 @@
 import { db, $, $$, money, esc, toast, S, iniciarPagina, cargarCatalogo } from "./core.js";
 
 let editando = null;
+let editandoU = null;
 const STOCK_BAJO = 5;
 
 async function vUsuarios() {
+  editandoU = null;
   const { data } = await db.from("perfil").select("*").order("nombre");
   const roles = ["admin", "mesero", "cocina", "caja", "pendiente"];
   $("#vista").innerHTML = `<div class="split"><div class="panel"><h2>Usuarios</h2>
@@ -11,30 +13,64 @@ async function vUsuarios() {
   const esPrincipal = u.email === "admin@fogoncriollo.com";
   const protegido = esPrincipal || u.id === S.user.id;
   const opciones = esPrincipal ? ["admin"] : roles;
-  return `<div class="fila" data-u="${u.id}"><span><b>${esc(u.nombre)}</b><br><small>${esc(u.email)}</small></span>
+  return `<div class="fila" data-u="${u.id}" data-nombre="${esc(u.nombre)}" data-email="${esc(u.email)}"><span><b>${esc(u.nombre)}</b><br><small>${esc(u.email)}</small></span>
     <select ${protegido ? "disabled" : ""}>${opciones.map(r => `<option ${r === u.rol || esPrincipal ? "selected" : ""}>${r}</option>`).join("")}</select>
+    <button class="btn sm" data-a="editU">Editar</button>
     <button class="btn sm danger" data-a="delU" ${protegido ? "disabled" : ""}>Eliminar</button></div>`;
 }).join("")}
-    </div><aside class="panel"><h2>Nuevo usuario</h2><div class="form">
+    </div><aside class="panel"><h2 id="uTit">Nuevo usuario</h2><div class="form">
       <input id="uNombre" placeholder="Nombre"><input id="uEmail" type="email" placeholder="Correo"><input id="uPass" type="password" placeholder="Contraseña (mín. 6)">
       <select id="uRol"><option>mesero</option><option>cocina</option><option>caja</option><option>admin</option></select>
-      <button class="btn pri" id="addU">Crear usuario</button></div></aside></div>`;
+      <button class="btn pri" id="addU">Crear usuario</button>
+      <button class="btn" id="uCanc" hidden>Cancelar</button></div></aside></div>`;
+
+  const modoCrear = () => {
+    editandoU = null;
+    $("#uTit").textContent = "Nuevo usuario";
+    $("#uNombre").value = ""; $("#uEmail").value = ""; $("#uPass").value = "";
+    $("#uPass").hidden = false; $("#uRol").hidden = false;
+    $("#addU").textContent = "Crear usuario";
+    $("#uCanc").hidden = true;
+  };
+  $("#uCanc").onclick = modoCrear;
+
   $("#addU").onclick = async () => {
+    if (editandoU) {
+      const { error } = await db.rpc("admin_actualizar_usuario", {
+        p_id: editandoU, p_nombre: $("#uNombre").value.trim(), p_email: $("#uEmail").value.trim()
+      });
+      if (error) return toast(error.message);
+      toast("Usuario actualizado"); return vUsuarios();
+    }
     const { error } = await db.rpc("admin_crear_usuario", { p_email: $("#uEmail").value, p_password: $("#uPass").value, p_nombre: $("#uNombre").value.trim(), p_rol: $("#uRol").value });
     if (error) return toast(error.message);
     toast("Usuario creado"); vUsuarios();
   };
+
   $("#vista").onchange = async (e) => {
     const f = e.target.closest("[data-u]"); if (!f) return;
     const { error } = await db.from("perfil").update({ rol: e.target.value }).eq("id", f.dataset.u);
     toast(error ? error.message : "Rol actualizado");
   };
+
   $("#vista").onclick = async (e) => {
-    if (e.target.dataset.a !== "delU") return;
+    const a = e.target.dataset.a;
     const f = e.target.closest("[data-u]");
-    if (!confirm("¿Eliminar este usuario? No podrá volver a entrar.")) return;
-    const { error } = await db.rpc("admin_eliminar_usuario", { p_id: f.dataset.u });
-    toast(error ? error.message : "Usuario eliminado"); vUsuarios();
+    if (a === "editU") {
+      editandoU = f.dataset.u;
+      $("#uTit").textContent = "Editar usuario";
+      $("#uNombre").value = f.dataset.nombre;
+      $("#uEmail").value = f.dataset.email;
+      $("#uPass").hidden = true; $("#uRol").hidden = true;
+      $("#addU").textContent = "Guardar cambios";
+      $("#uCanc").hidden = false;
+      $("#uNombre").focus();
+    }
+    if (a === "delU") {
+      if (!confirm("¿Eliminar este usuario? No podrá volver a entrar.")) return;
+      const { error } = await db.rpc("admin_eliminar_usuario", { p_id: f.dataset.u });
+      toast(error ? error.message : "Usuario eliminado"); vUsuarios();
+    }
   };
 }
 
