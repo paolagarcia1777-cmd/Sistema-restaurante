@@ -183,11 +183,25 @@ main { padding: 24px; max-width: 1360px; margin: auto }
 
 /* Mesero: ticket y pedidos de la mesa */
 .ln { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line) }
-.st { grid-column: 1 / -1; display: flex; gap: 8px }
+.st { grid-column: 1 / -1; display: flex; gap: 8px; flex-wrap: wrap; align-items: center }
 .st button {
   width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--wood);
   background: var(--paper); color: var(--ink); font-size: 20px
 }
+.st input { flex: 1 1 150px; min-width: 0 }
+/* Quitar el platillo completo del pedido (2 toques: arma y confirma) */
+.st .del {
+  width: auto; min-width: 44px; padding: 0 .85rem; border-radius: 99px;
+  font-size: 16px; color: var(--ember); border-color: var(--wood)
+}
+.st .del:hover { border-color: var(--ember) }
+.st .del.arm { background: var(--ember); border-color: var(--ember); color: #fffaf0; font-weight: 700 }
+/* Aviso de estado bajo el total (borrador / en cocina / en preparación) */
+.hint {
+  margin: 0 0 12px; padding: 9px 11px; font-size: 14px; color: var(--muted);
+  background: #fbf4e3; border: 1px dashed var(--wood); border-radius: 8px
+}
+.hint b { color: #a6401f; font-variant-numeric: tabular-nums }
 .tot {
   display: flex; justify-content: space-between; padding: 14px 0;
   border-top: 2px solid var(--ink);
